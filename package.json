@@ -1,0 +1,25 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "nodejs pro hoidanit",
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "homepage": "https://github.com/DangTanPhu/nodejs-pro-hoidanit#readme",
+  "bugs": {
+    "url": "https://github.com/DangTanPhu/nodejs-pro-hoidanit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DangTanPhu/nodejs-pro-hoidanit.git"
+  },
+  "license": "ISC",
+  "author": "Tan Phu",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
