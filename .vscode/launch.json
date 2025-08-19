@@ -6,7 +6,7 @@
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceRoot}",
-            "runtimeExecutable": "npm",
+            "runtimeExecutable": "nodemon",
             "runtimeArgs": [
                 "run",
                 "start:debug"
