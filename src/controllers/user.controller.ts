@@ -16,32 +16,40 @@ const getCreateUserPage = async(req :Request, res :Response) => {
         roles : roles
     })
     }
-const postCreateUser = async(req :Request, res :Response) => {
+const postCreateUser = async (req: Request, res: Response) => {
+    const { fullName, username, phone, role, address } = req.body; 
+    const file = req.file;
     
-    //object detructering
-    const {fullName,username,phone,role,address}=req.body; 
-   
-    //handle create user
-    // const a = await handleCreateUser(fullName,email,address);
+    // Lấy đúng tên file đã upload
+    const avatar = file?.filename ?? null;
 
-    return res.redirect("/admin/");
-    }  
+    // Lưu xuống DB
+    await handleCreateUser(fullName, username, address, phone, avatar, role);
+
+    return res.redirect("/admin/user");
+};
 const postDeleteUser   = async(req :Request, res :Response) => {
     const {id} = req.params;
     const a = await handleDeleteUser(id);
-    return res.redirect("/");
+    return res.redirect("/admin/user");
     }  
 const getViewUser = async(req :Request, res :Response) => {
     const {id} = req.params;
     const user =await getUserById(id);
-    return res.render("view-user.ejs", {
+    const roles= await getAllRoles();
+    return res.render("admin/user/detail.ejs", {
         id:id,
-        user:user
+        user:user,
+        roles 
     });
     }  
 const postUpdateUser = async(req :Request, res :Response) => {
-    const {id,fullName,email,address} = req.body;
-    const a= await updateUserById(id,fullName,email,address);
-    return res.redirect("/");
+    const { fullName, username, phone, role, address } = req.body; 
+    const file = req.file;
+    
+    // Lấy đúng tên file đã upload
+    const avatar = file?.filename ?? undefined;
+    await updateUserById(fullName, username, address, phone, avatar, role);
+    return res.redirect("/admin/user");
     }  
 export {getHomePage ,getCreateUserPage,postCreateUser,postDeleteUser,getViewUser,postUpdateUser };

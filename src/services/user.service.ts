@@ -1,8 +1,12 @@
-import getConnection from "config/database";
 import { PrismaClient, Prisma } from '@prisma/client'
 import { prisma } from "config/client";
-
-
+import { ACCOUNT_TYPE } from "config/constant";
+import bcrypt = require('bcrypt');
+import { PassThrough } from 'stream';
+const saltRounds = 10;
+const hashPassword = async (plainText:string) => {
+  return await bcrypt.hash(plainText,saltRounds )
+}
 
 const getAllUsers =async() => {
   const users = await prisma.user.findMany();
@@ -15,15 +19,22 @@ const getAllRoles =async() => {
 const handleCreateUser= async(
     fullName: string,
     email: string, 
-    address:string) => {
+    address:string,
+    phone: string,
+    avatar:string,
+    role:string) => {
+    const defaultPassword=await hashPassword("123456")
     //insert into database
     const newUser = await prisma.user.create({
       data: {
         fullName: fullName,
         username: email,
         address: address,
-        password:"",
-        accountType:""
+        password:defaultPassword,
+        accountType: ACCOUNT_TYPE.SYSTEM,
+        avatar:avatar,
+        phone: phone,
+        roleId: +role //"2"-> 2
       }
     })
     return newUser;
@@ -31,7 +42,7 @@ const handleCreateUser= async(
 }
 const handleDeleteUser = async(id: string) => {
     const deleteUser = await prisma.user.delete({
-      where :{id:+id}
+      where :  {id:+id}
     });
     return deleteUser;
 }
@@ -44,21 +55,23 @@ const getUserById = async(id: string) => {
 const updateUserById = async (
   id: string,
   fullName: string,
-  email: string,
-  address: string
+  phone:string,
+  role:string,
+  address: string,
+  avatar:string
 ) => {
   const updateUser = await prisma.user.update({
     where: {id: +id},
     data: {
         fullName: fullName,
-        username: email,
         address: address,
-        password:"",
-        accountType:""
+        phone:phone,
+        roleId:+role,
+        ...(avatar !== undefined && {avatar:avatar})
     }
   });
   return updateUser;
 };
 
 
-export {handleCreateUser,getAllUsers,handleDeleteUser,getUserById,updateUserById,getAllRoles}
+export {handleCreateUser,getAllUsers,handleDeleteUser,getUserById,updateUserById,getAllRoles,hashPassword}

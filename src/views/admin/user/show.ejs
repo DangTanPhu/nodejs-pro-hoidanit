@@ -46,17 +46,17 @@
                         <% users.forEach( function (result) { %>
                             <tr>
                             <td><%= result.id %></td>
-                            <td><%= result.fullname %></td>
+                            <td><%= result.fullName %></td>
                             <td><%= result.username %></td>
                             <td><%= result.address %></td>
                             <td>
                                 <div style="display: flex;gap: 10px;">
-                                    <form action="/handle-view-user/<%= result.id %>" method="get">
+                                    <form action="/admin/handle-view-user/<%= result.id %>" method="get">
                                     <button 
                                     type="submit"
                                     class="btn btn-warning">View</button> 
                                     </form>
-                                    <form action="/handle-delete-user/<%= result.id %>" method="post">
+                                    <form action="/admin/handle-delete-user/<%= result.id %>" method="post">
                                     <button 
                                     type="submit"
                                     class="btn btn-danger">Delete</button> 
