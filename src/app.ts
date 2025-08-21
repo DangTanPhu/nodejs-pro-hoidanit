@@ -24,6 +24,7 @@ webRoutes(app);
 //seeding data
 initDatabase();
 
+
 app.listen(port, () => {
-  console.log(`My app listening on port123 ${port}`);
+  console.log(`My app listening on port ${port}`);
 })

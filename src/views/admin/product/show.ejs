@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
     <meta name="author" content="Hỏi Dân IT" />
-    <title>Manage Product - Hỏi Dân IT</title>
+    <title>Manage Product</title>
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -23,9 +23,30 @@
                     <h1 class="mt-4">Manage Products</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Users</li>
+                        <li class="breadcrumb-item active">Products</li>
                     </ol>
-                    <div>table product</div>
+                    <div>
+                    <div style="display: flex;justify-content: space-between;align-items: center;">
+                        <h5>Table Products:</h5>
+                        <!-- <img src="/images/hoidanit.png"> -->
+                        <div>
+                            <a href="/admin/create-product" class="btn btn-warning">Create new product</a>
+                        </div>
+                    </div>
+                    <hr/>    
+                    <table class="table table-hover table-striped table-bordered">
+                    <thead>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Factory</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                         
+                    </tbody>
+                    </table>
+                    </div>
                 </div>
 
             </main>
