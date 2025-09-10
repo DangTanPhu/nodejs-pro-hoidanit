@@ -2,12 +2,13 @@ import { PrismaClient, Prisma } from '@prisma/client'
 import { prisma } from "config/client";
 import { ACCOUNT_TYPE } from "config/constant";
 import bcrypt = require('bcrypt');
-import { PassThrough } from 'stream';
 const saltRounds = 10;
 const hashPassword = async (plainText:string) => {
   return await bcrypt.hash(plainText,saltRounds )
 }
-
+const comparePassword = async(plainText: string , hashPassword:string)=>{
+  return await bcrypt.compare(plainText,hashPassword);
+}
 const getAllUsers =async() => {
   const users = await prisma.user.findMany();
   return users;
@@ -74,4 +75,4 @@ const updateUserById = async (
 };
 
 
-export {handleCreateUser,getAllUsers,handleDeleteUser,getUserById,updateUserById,getAllRoles,hashPassword}
+export {handleCreateUser,getAllUsers,handleDeleteUser,getUserById,updateUserById,getAllRoles,hashPassword,comparePassword}

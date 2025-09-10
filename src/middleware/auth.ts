@@ -1,0 +1,29 @@
+import { Response, Request, NextFunction } from "express";
+import { Role, User } from '@prisma/client'
+const isLogin = (req: Request, res: Response, next: NextFunction) => {
+    const isAuthenticated = req.isAuthenticated();
+    if (isAuthenticated) {
+        res.redirect("/");
+        return;
+    }
+    else {
+        next();
+    }
+};
+
+const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/admin')) {
+        const user = req.user;
+
+        if (user?.role?.name === "ADMIN") {
+            next();
+        }
+        else res.redirect("status/403.ejs");
+        return;
+    }
+    next();
+};
+export {
+    isLogin,
+    isAdmin
+};
