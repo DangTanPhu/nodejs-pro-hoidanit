@@ -23,7 +23,7 @@
 
     <!-- Libraries Stylesheet -->
     <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="l/client/ib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/client/ib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -51,6 +51,14 @@
         <!-- Single Product Start -->
         <div class="container-fluid py-5 mt-5">
             <div class="container py-5">
+                <div class="mb-3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi Tiết Sản phẩm</li>
+                        </ol>
+                    </nav>
+                </div>
                 <div class="row g-4 mb-5">
                     <div class="col-lg-8 col-xl-9">
                         <div class="row g-4">
@@ -110,7 +118,9 @@
                                 <div class="tab-content mb-5">
                                     <div class="tab-pane active" id="nav-about" role="tabpanel"
                                         aria-labelledby="nav-about-tab">
-                                        <p><%= product.detailDesc %></p>
+                                        <p>
+                                            <%= product.detailDesc %>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
