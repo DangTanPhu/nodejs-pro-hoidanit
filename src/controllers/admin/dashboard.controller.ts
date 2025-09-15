@@ -1,23 +1,35 @@
 import { getProductPage } from "controllers/client/product.controller";
-import { Request,Response } from "express"
+import { Request, Response } from "express"
+import { getOrderAdmin, getOrderDetailAdmin } from "services/admin/order.service";
 import { getProductList } from "services/admin/product.service";
 import { getAllUsers } from "services/user.service";
-const getDashBoardPage = async(req :Request, res :Response) => {
+const getDashBoardPage = async (req: Request, res: Response) => {
     return res.render("admin/dashboard/show.ejs");
-    }
-const getAdminUserPage = async(req :Request, res :Response) => {
-    const users =await getAllUsers();
-    return res.render("admin/user/show.ejs",{
-        users:users
+}
+const getAdminUserPage = async (req: Request, res: Response) => {
+    const users = await getAllUsers();
+    return res.render("admin/user/show.ejs", {
+        users: users
     });
-    }
-const getAdminProductPage = async(req :Request, res :Response) => {
-    const products =await getProductList();
-    return res.render("admin/product/show.ejs",{
+}
+const getAdminProductPage = async (req: Request, res: Response) => {
+    const products = await getProductList();
+    return res.render("admin/product/show.ejs", {
         products
     });
-    }
-const getAdminOrderPage = async(req :Request, res :Response) => {
-    return res.render("admin/order/show.ejs");
-    }
-export {getDashBoardPage,getAdminUserPage,getAdminProductPage,getAdminOrderPage}
+}
+const getAdminOrderPage = async (req: Request, res: Response) => {
+    const orders = await getOrderAdmin();
+    return res.render("admin/order/show.ejs", {
+        orders
+    });
+}
+const getAdminOrderDetailPage = async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const orderDetails = await getOrderDetailAdmin(+id);
+    return res.render("admin/order/detail.ejs", {
+        id: id,
+        orderDetails
+    });
+}
+export { getDashBoardPage, getAdminUserPage, getAdminProductPage, getAdminOrderPage,getAdminOrderDetailPage }

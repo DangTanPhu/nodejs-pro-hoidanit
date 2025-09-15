@@ -36,6 +36,7 @@ model User {
   Cart   Cart?
 
   @@map("users")
+  Order Order[]
 }
 
 model Role {
@@ -51,7 +52,17 @@ model Role {
 model Order {
   id         Int @id @default(autoincrement())
   totalPrice Int
-
+  receiverAddress String @db.VarChar(255)
+  receiverName String @db.VarChar(255)
+  receiverPhone String @db.VarChar(255)
+  // PENDING , CANCELED , COMPLETED
+  status String @default("PENDING")
+  paymentMethod String //COD , BANK
+  paymentStatus String //PAYMENT_UNPAID , PAYMENT_SUCEESS , PAYMENT_FAILED
+  paymentRef String?
+  user User @relation(fields: [userId],references: [id])
+  userId Int 
+  orderDetails OrderDetail[]
   @@map("orders")
 }
 
@@ -69,6 +80,7 @@ model Product {
   CartDetail CartDetail[]
 
   @@map("products")
+  OrderDetail OrderDetail[]
 }
 
 model Cart {
@@ -93,4 +105,14 @@ model CartDetail {
   productId Int
 
   @@map("cart_detail")
+}
+model OrderDetail{
+  id Int @id @default(autoincrement())
+price Int
+quantity Int
+order Order @relation(fields: [orderId],references: [id])
+orderId Int
+product Product @relation(fields: [productId],references: [id])
+productId Int
+@@map("order_detail")
 }

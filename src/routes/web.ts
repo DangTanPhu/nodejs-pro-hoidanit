@@ -1,9 +1,9 @@
 // const express = require('express');
 import express, { Express } from "express";
 import { getCreateUserPage, getHomePage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
-import { getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoardPage } from "controllers/admin/dashboard.controller";
+import { getAdminOrderDetailPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoardPage } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getCartPage, getProductPage, postAddProductToCart } from "controllers/client/product.controller";
+import { getCartPage, getCheckOutPage, getProductPage, getThanksPage, postAddProductToCart, postDeleteProductInCart, postHandleCartToCheckOut, postPlaceOrder } from "controllers/client/product.controller";
 import { getCreateProductPage, getViewProduct, postAdminCreateProduct, postDeleteProduct, postUpdateProduct } from "controllers/admin/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
@@ -11,9 +11,9 @@ import { isAdmin, isLogin } from "src/middleware/auth";
 const router = express.Router();
 const webRoutes = (app: Express) => {
     router.get("/", getHomePage);
-    router.get("/success-redirect",getSuccessRedirectPage)
+    router.get("/success-redirect", getSuccessRedirectPage)
     router.get("/product/:id", getProductPage);
-    router.get("/login",isLogin, getLoginPage);
+    router.get("/login", isLogin, getLoginPage);
     router.post('/login', passport.authenticate('local', {
         successRedirect: "/success-redirect",
         failureRedirect: "/login",
@@ -26,12 +26,16 @@ const webRoutes = (app: Express) => {
     router.post("/register", postRegister);
     router.post("/add-product-to-cart/:id", postAddProductToCart);
     router.get("/cart", getCartPage);
+    router.post("/delete-product-in-cart/:id", postDeleteProductInCart);
 
-
+    router.post("/handle-cart-to-checkout", postHandleCartToCheckOut);
+    router.get("/checkout", getCheckOutPage);
+    router.post("/place-order", postPlaceOrder);
+    router.get("/thanks", getThanksPage);
     // console.log(__dirname + "/views");  
 
     //admin routes
-    router.get('/admin',isAdmin, getDashBoardPage);
+    router.get('/admin', isAdmin, getDashBoardPage);
     router.get('/admin/user', getAdminUserPage);
     router.get('/admin/create-user', getCreateUserPage);
     router.post('/admin/handle-create-user', fileUploadMiddleware("avatar"), postCreateUser);
@@ -47,7 +51,8 @@ const webRoutes = (app: Express) => {
     router.post('/admin/handle-update-product', fileUploadMiddleware("image", "images/product"), postUpdateProduct);
 
     router.get('/admin/order', getAdminOrderPage);
-    app.use("/",isAdmin, router);
+    router.get('/admin/order/:id', getAdminOrderDetailPage);
+    app.use("/", isAdmin, router);
 }
 
 

@@ -1,4 +1,5 @@
 import { prisma } from "config/client"
+import { number, string } from "zod";
 
 const getProduct = async () => {
     const products = await prisma.product.findMany();
@@ -37,24 +38,24 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
         const currentCartDetail = await prisma.cartDetail.findFirst({
             where: {
                 productId: productId,
-                cartId:cart.id,
+                cartId: cart.id,
             }
         })
         await prisma.cartDetail.upsert({
             where: {
                 // trong truong hop khong ton tai thi truyen 0 vao create
-                id: currentCartDetail?.id ?? 0 
+                id: currentCartDetail?.id ?? 0
             },
             update: {
-                quantity:{
-                    increment:quantity 
+                quantity: {
+                    increment: quantity
                 },
             },
             create: {
                 price: product.price,
-                quantity:quantity,
-                productId:product.id,
-                cartId:cart.id
+                quantity: quantity,
+                productId: product.id,
+                cartId: cart.id
             },
         })
     } else {
@@ -76,22 +77,103 @@ const addProductToCart = async (quantity: number, productId: number, user: Expre
         })
     }
 }
-const getProductInCart = async (userId: number)=>{
-    const cart= await prisma.cart.findUnique({
-        where:{userId}
+const getProductInCart = async (userId: number) => {
+    const cart = await prisma.cart.findUnique({
+        where: { userId }
     })
-    if(cart){
-        const currentCartDetail= await prisma.cartDetail.findMany({
-            where:{cartId:cart.id},
-            include:{product:true}
+    if (cart) {
+        const currentCartDetail = await prisma.cartDetail.findMany({
+            where: { cartId: cart.id },
+            include: { product: true }
         })
         return currentCartDetail;
     }
     return [];
 }
+
+const deleteProductInCart = async (cartDetailId: number, userId: number, sumCart: number) => {
+    // xoas cart - detail
+    await prisma.cartDetail.delete({
+        where: { id: cartDetailId }
+    });
+
+    if (sumCart === 1) {
+        //delete cart
+        await prisma.cart.delete({
+            where: { userId }
+        })
+    } else {
+        // update cart
+        await prisma.cart.update({
+            where: { userId },
+            data: {
+                sum: {
+                    // decrement :w
+                    decrement: 1,
+                }
+            }
+        })
+    }
+}
+const updateCartDetailBeforeCheckOut = async (data: { id: string; quantity: string }[]) => {
+    for (let i = 0; i < data.length; i++) {
+        await prisma.cartDetail.update({
+            where: {
+                id: +(data[i].id)
+            },
+            data: {
+                quantity: +(data[i].quantity)
+            }
+        })
+    }
+}
+const handlerPlaceOrder = async(userId: number, receiverName:string, receiverAddress:string, receiverPhone:string,totalPrice:number) => {
+   const cart = await prisma.cart.findUnique({
+    where: {userId},
+    include:{
+        cartDetails:true
+    }
+   })
+   if(cart){
+    //create order
+    const dataOrderDetail = cart?.cartDetails?.map(
+        item => ({
+            price:item.price,
+            quantity:item.quantity,
+            productId:item.productId
+        }) 
+    ) ?? [] ;
+    await prisma.order.create({
+        data:{
+            receiverName,
+            receiverAddress,
+            receiverPhone,
+            paymentMethod:"COD",
+            paymentStatus:"PAYMENT_UNPAID",
+            status:"PENDING",
+            totalPrice:totalPrice,
+            userId,
+            orderDetails:{
+                create:dataOrderDetail
+            }
+        }
+    })
+    //remove cartdetail
+    await prisma.cartDetail.deleteMany({
+        where:{cartId:cart.id}
+    })
+    await prisma.cart.delete({
+        where:{id:cart.id}
+    })
+   }
+
+   console.log(cart)
+}
 export {
     getProduct,
     getProductById,
     addProductToCart,
-    getProductInCart
+    getProductInCart,
+    deleteProductInCart,
+    updateCartDetailBeforeCheckOut, handlerPlaceOrder
 }
