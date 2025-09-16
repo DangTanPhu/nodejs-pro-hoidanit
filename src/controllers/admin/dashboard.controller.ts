@@ -1,10 +1,14 @@
 import { getProductPage } from "controllers/client/product.controller";
 import { Request, Response } from "express"
+import { getDashboardInfo } from "services/admin/dashboard.service";
 import { getOrderAdmin, getOrderDetailAdmin } from "services/admin/order.service";
 import { getProductList } from "services/admin/product.service";
 import { getAllUsers } from "services/user.service";
 const getDashBoardPage = async (req: Request, res: Response) => {
-    return res.render("admin/dashboard/show.ejs");
+    const info = await getDashboardInfo();
+    return res.render("admin/dashboard/show.ejs",{
+        info
+    });
 }
 const getAdminUserPage = async (req: Request, res: Response) => {
     const users = await getAllUsers();

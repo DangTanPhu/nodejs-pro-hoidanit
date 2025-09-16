@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    // Cho phép import default từ các module CommonJS.
+    // Giúp bạn viết: 
+    //   import express from "express";
+    // thay vì:
+    //   import * as express from "express";
     "esModuleInterop": true,
+    //Chỉ định phiên bản JavaScript mà TS sẽ biên dịch xuống.
     "target": "es6",
     "sourceMap": true,
     "skipLibCheck": true,
@@ -9,12 +15,21 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "config/*": ["./src/config/*"],
-      "controllers/*": ["./src/controllers/*"],
-      "models/*": ["./src/models/*"],
-      "routes/*": ["./src/routes/*"],
-      "services/*": ["./src/services/*"]
+      "config/*": [
+        "./src/config/*"
+      ],
+      "controllers/*": [
+        "./src/controllers/*"
+      ],
+      "models/*": [
+        "./src/models/*"
+      ],
+      "routes/*": [
+        "./src/routes/*"
+      ],
+      "services/*": [
+        "./src/services/*"
+      ]
     },
-    
   }
 }

@@ -3,7 +3,7 @@ import express, { Express } from "express";
 import { getCreateUserPage, getHomePage, postCreateUser, postDeleteUser, getViewUser, postUpdateUser } from "controllers/user.controller";
 import { getAdminOrderDetailPage, getAdminOrderPage, getAdminProductPage, getAdminUserPage, getDashBoardPage } from "controllers/admin/dashboard.controller";
 import fileUploadMiddleware from "src/middleware/multer";
-import { getCartPage, getCheckOutPage, getProductPage, getThanksPage, postAddProductToCart, postDeleteProductInCart, postHandleCartToCheckOut, postPlaceOrder } from "controllers/client/product.controller";
+import { getCartPage, getCheckOutPage, getOrderHistoryPage, getProductPage, getThanksPage, postAddProductToCart, postAddToCartFromDetailPage, postDeleteProductInCart, postHandleCartToCheckOut, postPlaceOrder } from "controllers/client/product.controller";
 import { getCreateProductPage, getViewProduct, postAdminCreateProduct, postDeleteProduct, postUpdateProduct } from "controllers/admin/product.controller";
 import { getLoginPage, getRegisterPage, getSuccessRedirectPage, postLogout, postRegister } from "controllers/client/auth.controller";
 import passport from "passport";
@@ -32,6 +32,7 @@ const webRoutes = (app: Express) => {
     router.get("/checkout", getCheckOutPage);
     router.post("/place-order", postPlaceOrder);
     router.get("/thanks", getThanksPage);
+    router.post("/add-to-cart-from-detail-page/:id",postAddToCartFromDetailPage)
     // console.log(__dirname + "/views");  
 
     //admin routes
@@ -49,7 +50,7 @@ const webRoutes = (app: Express) => {
     router.post('/admin/handle-delete-product/:id', postDeleteProduct);
     router.get('/admin/handle-view-product/:id', getViewProduct);
     router.post('/admin/handle-update-product', fileUploadMiddleware("image", "images/product"), postUpdateProduct);
-
+    router.get("/order-history",getOrderHistoryPage);
     router.get('/admin/order', getAdminOrderPage);
     router.get('/admin/order/:id', getAdminOrderDetailPage);
     app.use("/", isAdmin, router);
