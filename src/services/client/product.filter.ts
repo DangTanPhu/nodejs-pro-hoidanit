@@ -151,12 +151,12 @@ const getProductWithFilter = async (
     let orderByClause: any = {}
     if (sort) {
         if (sort === 'gia-tang-dan') {
-            orderByClause.orderBy = {
+            orderByClause= {
                 price: "asc"
             }
         }
         if (sort === 'gia-giam-dan') {
-            orderByClause.orderBy = {
+            orderByClause= {
                 price: "desc"
             }
         }
