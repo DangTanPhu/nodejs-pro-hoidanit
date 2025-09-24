@@ -38,6 +38,12 @@ const countTotalProductPages =async () =>{
   const totalPages = Math.ceil(totalItems / pageSize);
   return totalPages;
 }
+const countTotalOrderPages =async () =>{
+  const pageSize=TOTAL_ITEMS_PER_PAGE;
+  const totalItems = await prisma.order.count();
+  const totalPages = Math.ceil(totalItems / pageSize);
+  return totalPages;
+}
 const handleDeleteProduct = async (id:number) => {
     await prisma.product.delete({
         where: {id}
@@ -80,5 +86,6 @@ export {
     handleDeleteProduct,
     getProductById,
     updateProductById,
-    countTotalProductPages
+    countTotalProductPages,
+    countTotalOrderPages
 }

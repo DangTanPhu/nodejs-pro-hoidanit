@@ -1,14 +1,23 @@
 import { prisma } from "config/client"
 import { number, string } from "zod";
 
-const getProduct = async () => {
-    const products = await prisma.product.findMany();
+const getProduct = async (page:number,pageSize:number) => {
+    const skip = (page -1)*pageSize;
+    const products = await prisma.product.findMany({
+        skip:skip,
+        take:pageSize
+    });
     return products;
 }
 const getProductById = async (id: number) => {
     return await prisma.product.findUnique({
         where: { id }
     })
+}
+const countTotalProductClientPages = async (pageSize:number) =>{
+    const totalItems = await prisma.product.count();
+    const totalPages = Math.ceil(totalItems/pageSize);
+    return totalPages;
 }
 const addProductToCart = async (quantity: number, productId: number, user: Express.User) => {
     const cart = await prisma.cart.findUnique({
@@ -231,5 +240,6 @@ export {
     addProductToCart,
     getProductInCart,
     deleteProductInCart,
-    updateCartDetailBeforeCheckOut, handlerPlaceOrder, getOrderHistory
+    updateCartDetailBeforeCheckOut, handlerPlaceOrder, getOrderHistory,
+    countTotalProductClientPages
 }

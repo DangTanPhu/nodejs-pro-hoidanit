@@ -68,7 +68,7 @@
                                     <ul class="nav nav-pills d-inline-flex text-center mb-5">
                                         <li class="nav-item">
                                             <a class="d-flex m-2 py-2 bg-light rounded-pill active"
-                                                data-bs-toggle="pill" href="#tab-1">
+                                                 href="/products">
                                                 <span class="text-dark" style="width: 130px;">All Products</span>
                                             </a>
                                         </li>
@@ -130,6 +130,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="pagination d-flex justify-content-center mt-5">
+                    <li class="<%= page === 1 ? 'disabled page-item' : 'page-item' %> ">
+                        <a class="page-link" href="/?page=<%= page - 1  %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <% for(var i=1; i <=totalPages; i++) {%>
+                        <li class="page-item">
+                            <a class="<%= page === i ? 'active page-link' : 'page-link' %>" href="/?page=<%= i  %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                        <% } %>
+                            <li class="<%= page === totalPages ? 'disabled page-item' : 'page-item' %> ">
+                                <a class="page-link" href="/?page=<%= page + 1  %>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                </div>
+
                 <!-- Fruits Shop End-->
                 <!-- Footer Start -->
                 <%- include('../layout/footer'); -%>

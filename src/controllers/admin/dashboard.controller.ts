@@ -2,7 +2,7 @@ import { getProductPage } from "controllers/client/product.controller";
 import { Request, Response } from "express"
 import { getDashboardInfo } from "services/admin/dashboard.service";
 import { getOrderAdmin, getOrderDetailAdmin } from "services/admin/order.service";
-import { countTotalProductPages, getProductList } from "services/admin/product.service";
+import { countTotalOrderPages, countTotalProductPages, getProductList } from "services/admin/product.service";
 import { countTotalUserPages, getAllUsers } from "services/user.service";
 const getDashBoardPage = async (req: Request, res: Response) => {
     const info = await getDashboardInfo();
@@ -38,9 +38,15 @@ const getAdminProductPage = async (req: Request, res: Response) => {
     });
 }
 const getAdminOrderPage = async (req: Request, res: Response) => {
+    const {page} =req.query;
+    let currentPage = page? +page:1;
+    if(currentPage <=0) currentPage=1;
+    const totalPages = await countTotalOrderPages();
     const orders = await getOrderAdmin();
     return res.render("admin/order/show.ejs", {
-        orders
+        orders: orders,
+        totalPages:+totalPages,
+        page:+currentPage
     });
 }
 const getAdminOrderDetailPage = async (req: Request, res: Response) => {
