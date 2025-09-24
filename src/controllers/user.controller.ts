@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { countTotalProductPages } from "services/admin/product.service";
 import { countTotalProductClientPages, getProduct } from "services/client/item.service";
-import { getProductWithFilter, userFilter } from "services/client/product.filter";
-import { getAllRoles, getAllUsers, getUserById, handleCreateUser, handleDeleteUser, updateUserById } from "services/user.service";
+import { getProductWithFilter } from "services/client/product.filter";
+import { getAllRoles, getUserById, handleCreateUser, handleDeleteUser, updateUserById } from "services/user.service";
 const getHomePage = async (req: Request, res: Response) => {
     const { page } = req.query;
     let currentPage = page ? +page : 1;

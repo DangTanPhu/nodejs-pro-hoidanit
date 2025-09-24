@@ -1,7 +1,3 @@
-const { error } = require("console");
-const { type } = require("os");
-const { text } = require("stream/consumers");
-
 (function ($) {
     "use strict";
 

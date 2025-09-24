@@ -55,6 +55,7 @@ app.use((req, res, next) => {
 
 //config routes
 webRoutes(app);
+
 //config api
 apiRouter(app);
 //seeding data
