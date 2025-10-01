@@ -1,5 +1,6 @@
-import { createUsersAPI, deleteUserByIdAPI, getAllUserByIdAPI, getAllUsersAPI, postAddProductToCartAPI, updateUserByIdAPI } from 'controllers/client/api.controller';
+import { createUsersAPI, deleteUserByIdAPI, fetchAccountAPI, getAllUserByIdAPI, getAllUsersAPI, loginAPI, postAddProductToCartAPI, updateUserByIdAPI } from 'controllers/client/api.controller';
 import express, { Express } from 'express'
+import { checkValidJWT } from 'src/middleware/jwt';
 const router = express.Router();
 const apiRouter = (app: Express) => {
     router.post('/add-product-to-cart', postAddProductToCartAPI);
@@ -11,6 +12,11 @@ const apiRouter = (app: Express) => {
     // patch kiem tra tung field neu co , chi gui 1-2 field
     router.put('/users/:id',updateUserByIdAPI);
     router.delete('/users/:id',deleteUserByIdAPI);
-    app.use('/api', router)
+
+
+    router.post('/login', loginAPI);
+    router.get('/account',fetchAccountAPI)
+
+    app.use('/api',checkValidJWT, router)
 }
 export default apiRouter;

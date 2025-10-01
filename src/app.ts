@@ -7,6 +7,7 @@ import passport from "passport";
 import configPassportLocal from "src/middleware/passport.local";
 import session from "express-session";
 import apiRouter from "routes/api";
+import cors from "cors"
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const { PrismaClient } = require('@prisma/client');
 const app = express();
@@ -52,6 +53,9 @@ app.use((req, res, next) => {
     res.locals.user = req.user || null; // Pass user object to all views
     next();
 });
+
+//cofig cors
+app.use(cors());
 
 //config routes
 webRoutes(app);
