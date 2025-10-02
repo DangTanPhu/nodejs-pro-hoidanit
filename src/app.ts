@@ -50,12 +50,14 @@ configPassportLocal();
 
 //config global
 app.use((req, res, next) => {
-    res.locals.user = req.user || null; // Pass user object to all views
-    next();
+  res.locals.user = req.user || null; // Pass user object to all views
+  next();
 });
 
 //cofig cors
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"]
+}));
 
 //config routes
 webRoutes(app);
